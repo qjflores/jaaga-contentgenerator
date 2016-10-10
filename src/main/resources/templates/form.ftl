@@ -1,28 +1,20 @@
 <html>
     <head>
-        <title>Welcome</title>
+        <title>Enter Text to Process</title>
  
         <link href="css/bootstrap.css" rel="stylesheet" />
     </head>
     <body>
         <form class="form-inline" method="POST" action="/sait">
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="user_input_text">Name</label>
                 <input type="text"
                        class="form-control"
-                       id="name"
-                       name="name"
+                       id="user_input_text"
+                       name="user_input_text"
                        placeholder="John ddd">
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email"
-                       class="form-control"
-                       id="email"
-                       name="email"
-                       placeholder="john.doe@example.org">
-            </div>
-            <button type="submit" class="btn btn-default">Send invitation</button>
+            <button type="submit" class="btn btn-default">Submit Text</button>
         </form>
     <body>
 </html>
