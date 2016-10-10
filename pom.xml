@@ -17,8 +17,14 @@
     <dependency>  
       <groupId>com.sparkjava</groupId>
       <artifactId>spark-template-freemarker</artifactId>
-    <version>2.3</version>
-</dependency>
+      <!-- DEVELOPER NOTE: Maven currently only supports freemarker up to 2.3.9, the latest is 2.3.25-incubating-->
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>1.6.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
