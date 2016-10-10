@@ -11,6 +11,8 @@ ADD pom.xml /code/pom.xml
 RUN ["mvn", "dependency:resolve"]
 RUN ["mvn", "verify"]
 
+ADD en-sent.bin /code/src/resources/input/en-sent.bin
+
 # Adding source, compile and package into a fat jar
 ADD src /code/src
 RUN ["mvn", "package"]
