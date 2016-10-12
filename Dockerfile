@@ -12,7 +12,7 @@ RUN ["mvn", "dependency:resolve"]
 RUN ["mvn", "verify"]
 
 ADD en-sent.bin /code/src/resources/input/en-sent.bin
-ADD en-token.bin /code/src/resources/input/en-sent.bin
+ADD en-token.bin /code/src/resources/input/en-token.bin
 
 # Adding source, compile and package into a fat jar
 ADD src /code/src
