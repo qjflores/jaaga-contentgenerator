@@ -13,6 +13,7 @@ RUN ["mvn", "verify"]
 
 ADD en-sent.bin /code/src/resources/input/en-sent.bin
 ADD en-token.bin /code/src/resources/input/en-token.bin
+ADD en-pos-maxent.bin /code/src/resources/input/en-pos-maxent.bin
 
 # Adding source, compile and package into a fat jar
 ADD src /code/src
