@@ -5,6 +5,7 @@
         <link href="css/bootstrap.css" rel="stylesheet" />
     </head>
     <body>
+        <h2>Part of Speech Example</h2>
         <form class="form-inline" method="POST" action="/part-of-speech/result">
             <div class="form-group">
                 <label for="user_input_text">Name</label>

@@ -25,6 +25,9 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 
+import NLPbot.TokenInitialzer;
+import NLPbot.PosTaggerInitializer;
+
 public class Hello {
 
     static SentenceModel model;
@@ -33,6 +36,8 @@ public class Hello {
     static InputStream modelInPOStagger;
     static TokenizerModel modelToken;
     static POSModel modelPOStagger;
+    static TokenInitialzer tokenInitialzer;
+    static PosTaggerInitializer posTaggerInitializer;
 
     public static void main(String[] args) {
         final Configuration configuration = new Configuration();
@@ -131,33 +136,10 @@ public class Hello {
             System.out.println("main.post./token/result");
             StringWriter writer = new StringWriter();
             //get the models from source, used to detect sentences
-            try {
-                System.out.println("trying to get the InputStream");
-                modelInToken = new FileInputStream("src/resources/input/en-token.bin");
-                System.out.println(modelInToken);
-
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("something went wrong" + e);
-                e.printStackTrace();
-            }
+            tokenInitialzer = new TokenInitialzer();
+            modelInToken = tokenInitialzer.getSourceModel();
             //create a new model
-            try {
-                modelToken = new TokenizerModel(modelInToken);
-                System.out.println(modelToken);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                if (modelInToken != null) {
-                    try {
-                        modelInToken.close();
-                    }
-                    catch (IOException e) {
-                    }
-                }
-            }
+            modelToken = tokenInitialzer.createTokenModel();
             //from the user input, split the paragraph into tokens
             try {
                 String user_input_text = request.queryParams("user_input_text") != null ? request.queryParams("user_input_text") : "anonymous";
@@ -198,61 +180,18 @@ public class Hello {
             System.out.println("main.post./opennlp/part-of-speech/result");
             StringWriter writer = new StringWriter();
             // setup token model and part of speech model
-            try {
-                System.out.println("trying to get the InputStream");
-                modelInToken = new FileInputStream("src/resources/input/en-token.bin");
-                System.out.println(modelInToken);
+            tokenInitialzer = new TokenInitialzer();
+            modelInToken = tokenInitialzer.getSourceModel();
+            //create a new model
+            modelToken = tokenInitialzer.createTokenModel();
 
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("something went wrong" + e);
-                e.printStackTrace();
-            }
-            //create a new token model
-            try {
-                modelToken = new TokenizerModel(modelInToken);
-                System.out.println(modelToken);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                if (modelInToken != null) {
-                    try {
-                        modelInToken.close();
-                    }
-                    catch (IOException e) {
-                    }
-                }
-            }
             // setup part of speech model and part of speech model
-            try {
-                System.out.println("trying to get the InputStream");
-                modelInPOStagger = new FileInputStream("src/resources/input/en-pos-maxent.bin");
-                System.out.println(modelInPOStagger);
 
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("something went wrong" + e);
-                e.printStackTrace();
-            }
+            posTaggerInitializer = new PosTaggerInitializer();
+            modelInPOStagger = posTaggerInitializer.getSourceModel();
+
             // cerate new part of speech model
-            try {
-                modelPOStagger = new POSModel(modelInPOStagger);
-            }
-            catch (IOException e) {
-              // Model loading failed, handle the error
-              e.printStackTrace();
-            }
-            finally {
-              if (modelInPOStagger != null) {
-                try {
-                  modelInPOStagger.close();
-                }
-                catch (IOException e) {
-                }
-              }
-            }
+            modelPOStagger = posTaggerInitializer.createPosModel();
 
             //from the user input, split the paragraph into tokens, then part of speech it
             try {

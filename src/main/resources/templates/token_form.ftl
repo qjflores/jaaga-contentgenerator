@@ -5,6 +5,7 @@
         <link href="css/bootstrap.css" rel="stylesheet" />
     </head>
     <body>
+        <h2>Token Example</h2>
         <form class="form-inline" method="POST" action="/token/result">
             <div class="form-group">
                 <label for="user_input_text">Name</label>

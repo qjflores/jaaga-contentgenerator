@@ -7,8 +7,8 @@
     <body>
         <form class="form-inline" method="POST" action="/sait">
             <div class="form-group">
-                <label for="user_input_text">Name</label>
-                <input type="text"
+                <label for="user_input_text">Enter Paragraph</label>
+                <input type="text-area"
                        class="form-control"
                        id="user_input_text"
                        name="user_input_text"
