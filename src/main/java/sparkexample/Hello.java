@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 
 import opennlp.tools.tokenize.Tokenizer;
@@ -27,6 +28,7 @@ import opennlp.tools.postag.POSTaggerME;
 
 import NLPbot.TokenInitialzer;
 import NLPbot.PosTaggerInitializer;
+import penntree.PennTree;
 
 public class Hello {
 
@@ -38,6 +40,7 @@ public class Hello {
     static POSModel modelPOStagger;
     static TokenInitialzer tokenInitialzer;
     static PosTaggerInitializer posTaggerInitializer;
+
 
     public static void main(String[] args) {
         final Configuration configuration = new Configuration();
@@ -202,12 +205,22 @@ public class Hello {
      
                 String[] tokens = tokenizer.tokenize(user_input_text);
                 String tags[] = tagger.tag(tokens);
-                System.out.println(tags);
-                System.out.println(tokens);
-                System.out.println(Arrays.toString(tokens));
-                System.out.println(Arrays.toString(tags));
-                //System.out.println(tagger.probs());
-                // part of speech it
+                PennTree penntree = new PennTree();
+                HashMap penntree_hashmap = penntree.getPennTreeHashMap();
+                List pos_list = new ArrayList();
+                for (int i = 0; i<tokens.length; i++)
+                {
+                    HashMap mMap = new HashMap();
+                    mMap.put("token", tokens[i]);
+                    mMap.put("tag", tags[i]);
+                    if (null != penntree_hashmap.get(tags[i])) {
+                        mMap.put("pos", penntree_hashmap.get(tags[i]));
+                    }
+                    else {
+                        mMap.put("pos", "null1");    
+                    }
+                    pos_list.add(mMap);
+                }
 
                 Template resultTemplate = configuration.getTemplate("templates/part_of_speech_result.ftl");
  
@@ -215,6 +228,7 @@ public class Hello {
                 map.put("user_input_text", user_input_text);
                 map.put("tokens", tokens);
                 map.put("tags", tags);
+                map.put("pos_list", pos_list);
                 resultTemplate.process(map, writer);
             } catch (Exception e) {
                 System.out.println(e);

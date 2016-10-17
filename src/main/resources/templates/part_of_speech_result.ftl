@@ -7,10 +7,12 @@
         <br>
         <h2>Part of Speech Tagger</h2>
         <h2> </h2>
-
-        <#list tags as tag>
+        <ul>
+             <li> Token : Tag : Part of Speech</li>
+          </ul>
+        <#list pos_list as pos_dict>
           <ul>
-             <li>${tag}</li>
+             <li> ${pos_dict.token} , ${pos_dict.tag} , ${pos_dict.pos}</li>
           </ul>
         </#list>
     </body>
