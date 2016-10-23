@@ -3,17 +3,16 @@
         <title>Said</title>
     </head>
     <body>
-        <h1> Your name is ${user_input_text}</h1>
+    	<h1>Noun Problem</h1>
+        <h1> Reading:${user_input_text}</h1>
         <br>
-        <h2>Part of Speech Tagger</h2>
-        <h2> </h2>
-        <ul>
-             <li> Token : Tag : Part of Speech</li>
-          </ul>
-        <#list pos_list as pos_dict>
-          <ul>
-             <li> ${pos_dict.token} , ${pos_dict.tag} , ${pos_dict.pos}</li>
-          </ul>
-        </#list>
+        <h1> ${prompt}</h1>
+        <br>
+		<#list answer_list as answer>
+			<li> ${answer} </li>
+		</#list>
+		<#list not_answer_list as notanswer>
+			<li> ${notanswer} </li>
+		</#list>
     </body>
 </html>

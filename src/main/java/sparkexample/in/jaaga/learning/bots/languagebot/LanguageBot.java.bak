@@ -1,0 +1,44 @@
+package in.jaaga.learning.bots.languagebot;
+
+//import in.jaaga.learning.R; TODO port his over to mission.add when migrate to android
+import in.jaaga.learning.api.Bot;
+import in.jaaga.learning.api.ChatItem;
+import in.jaaga.learning.bots.skillbot.Mission;
+import in.jaaga.learning.bots.skillbot.ProblemSkill;
+import in.jaaga.learning.bots.languagebot.problems.Noun;
+
+/*
+Created by Quijano Flores 2016/10/18
+*/
+
+public class LanguageBot extends Bot {
+    Mission mission;
+
+    public void init() {
+        //StringUtil.setResources(getResources());
+        mission = new Mission(sender);
+        //nouns
+        mission.add(new ProblemSkill(this, "language title",  new Noun("hello"), 10, 100));
+        mission.add(new ProblemSkill(this, "language title", new Noun("hello"), 7, 100));
+        mission.add(new ProblemSkill(this, "language title", new Noun("hello"), 4, 100));
+    } 
+    public void onStart() {
+        super.onStart();
+        init();
+        sender.send(new ChatItem("hello world"));
+        sender.send(mission.getPrompt());
+    }
+
+    public void onMessageReceived(String text) {
+        mission.processResponse(text);
+        sender.send(mission.getPrompt());
+    }
+
+/*    private String title(int resourceId, int arg0) {
+        return getResources().getString(resourceId, Integer.valueOf(arg0));
+    }
+
+    private String title(int resourceId, int arg0, int arg1) {
+        return getResources().getString(resourceId, Integer.valueOf(arg0), Integer.valueOf(arg1));
+    }*/
+}
