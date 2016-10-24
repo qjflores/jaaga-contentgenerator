@@ -24,7 +24,7 @@ public class Noun {
         //initialize stuff
         HashMap problemMap = new HashMap();
         List pos_list = new ArrayList();
-        List answer_list = new ArrayList();
+        ArrayList answer_list = new ArrayList();
         List not_answer_list = new ArrayList();
         //get tokens and tags
         String[] tokens = tokenizer.tokenize(sentence1);
@@ -64,7 +64,7 @@ public class Noun {
         }
 
         problemMap.put("prompt", prompt);
-        problemMap.put("answer_list", answer_list);
+        problemMap.put("answer_list", answer_list.get(0));
         problemMap.put("not_answer_list", not_answer_list);
         return problemMap;
         //return prompt; //TODO add answer list 

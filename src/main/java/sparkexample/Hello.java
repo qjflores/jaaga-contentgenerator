@@ -216,7 +216,7 @@ public class Hello {
                 //map.put("tags", tags);
                 //map.put("pos_list", pos_list);
                 map.put("prompt", noun_problem.get("prompt"));
-                map.put("answer_list", noun_problem.get("answer_list"));
+                map.put("answer_list", noun_problem.get("answer_list").toString());
                 map.put("not_answer_list", noun_problem.get("not_answer_list"));
                 
                 System.out.println(noun_problem);
@@ -225,8 +225,39 @@ public class Hello {
                 System.out.println(e);
                 halt(500);
             }
+            System.out.println("here's teh querymap");
+            System.out.println(request.queryMap());
             return writer;
 
+        });
+
+        post("/part-of-speech/answer-check", (request, response) -> {
+
+            String answer_check_response;
+            StringWriter writer = new StringWriter();
+            System.out.println("post./part-of-speech/answer");
+            String user_input_answer = request.queryParams("user_input_answer") != null ? request.queryParams("user_input_answer") : "anonymous";
+            //clean user input data
+            String answer_list = request.queryParams("answer_list") != null ? request.queryParams("answer_list") : "anonymous";
+            String[] cleaned_input_answer = answer_list.split("/");
+            String cleaned_answer = cleaned_input_answer[0];
+            String prompt = request.queryParams("prompt") != null ? request.queryParams("prompt") : "anonymous";
+
+            Map<String, Object> map = new HashMap<>();
+            if (user_input_answer.equals(cleaned_answer)) {
+                answer_check_response = "Correct, move onto the next Problem";
+            }
+            else {
+                answer_check_response = "sorry, try again";
+            }
+            map.put("answer_check_response", answer_check_response);
+            try{
+                Template answerCheckTemplate = configuration.getTemplate("templates/noun_answer_check.ftl");
+                answerCheckTemplate.process(map, writer);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            return writer;
         });
 
     }
