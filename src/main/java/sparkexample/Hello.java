@@ -31,6 +31,8 @@ import NLPbot.PosTaggerInitializer;
 import penntree.PennTree;
 
 import in.jaaga.learning.bots.languagebot.problems.Noun;
+import in.jaaga.learning.bots.languagebot.problems.Verb;
+
 
 public class Hello {
 
@@ -164,6 +166,132 @@ public class Hello {
                 halt(500);
             }
             return writer;
+        });
+
+        get("/opennlp/part-of-speech/noun/", (request, response) -> {
+            System.out.println("main.get./opennlp/part-of-speech");
+            StringWriter writer = new StringWriter();
+            try {
+                Template formTemplate = configuration.getTemplate("templates/noun/part_of_speech_form.ftl");
+ 
+                formTemplate.process(null, writer);
+            } catch (Exception e) {
+                System.out.println("something went wrong" + e);
+                halt(500);
+            }
+
+            return writer;
+        });
+
+        post("/opennlp/part-of-speech/noun/result", (request, response) -> {
+            System.out.println("main.post./opennlp/part-of-speech/noun/result");
+            StringWriter writer = new StringWriter();
+            // setup token model and part of speech model
+            tokenInitialzer = new TokenInitialzer();
+            modelInToken = tokenInitialzer.getSourceModel();
+            //create a new model
+            modelToken = tokenInitialzer.createTokenModel();
+
+            // setup part of speech model and part of speech model
+
+            posTaggerInitializer = new PosTaggerInitializer();
+            modelInPOStagger = posTaggerInitializer.getSourceModel();
+
+            // cerate new part of speech model
+            modelPOStagger = posTaggerInitializer.createPosModel();
+            Tokenizer tokenizer = new TokenizerME(modelToken);
+            POSTaggerME tagger = new POSTaggerME(modelPOStagger);
+
+            //from the user input, split the paragraph into tokens, then part of speech it
+            try {
+                String user_input_text = request.queryParams("user_input_text") != null ? request.queryParams("user_input_text") : "anonymous";
+                System.out.println(user_input_text);
+
+                Noun noun = new Noun();
+                HashMap noun_problem = noun.createNounProblem(user_input_text, tokenizer, tagger); 
+
+                Template resultTemplate = configuration.getTemplate("templates/noun/part_of_speech_result.ftl");
+ 
+                Map<String, Object> map = new HashMap<>();
+                map.put("user_input_text", user_input_text);
+                //map.put("tokens", tokens);
+                //map.put("tags", tags);
+                //map.put("pos_list", pos_list);
+                map.put("prompt", noun_problem.get("prompt"));
+                map.put("answer_list", noun_problem.get("answer_list").toString());
+                map.put("not_answer_list", noun_problem.get("not_answer_list"));
+                
+                System.out.println(noun_problem);
+                resultTemplate.process(map, writer);
+            } catch (Exception e) {
+                System.out.println(e);
+                halt(500);
+            }
+            return writer;
+
+        });
+
+        get("/opennlp/part-of-speech/verb/", (request, response) -> {
+            System.out.println("main.get./opennlp/part-of-speech/verb");
+            StringWriter writer = new StringWriter();
+            try {
+                Template formTemplate = configuration.getTemplate("templates/verb/part_of_speech_form.ftl");
+ 
+                formTemplate.process(null, writer);
+            } catch (Exception e) {
+                System.out.println("something went wrong" + e);
+                halt(500);
+            }
+
+            return writer;
+        });
+
+        post("/opennlp/part-of-speech/verb/result", (request, response) -> {
+            System.out.println("main.post./opennlp/part-of-speech/verb/result");
+            StringWriter writer = new StringWriter();
+            // setup token model and part of speech model
+            tokenInitialzer = new TokenInitialzer();
+            modelInToken = tokenInitialzer.getSourceModel();
+            //create a new model
+            modelToken = tokenInitialzer.createTokenModel();
+
+            // setup part of speech model and part of speech model
+
+            posTaggerInitializer = new PosTaggerInitializer();
+            modelInPOStagger = posTaggerInitializer.getSourceModel();
+
+            // cerate new part of speech model
+            modelPOStagger = posTaggerInitializer.createPosModel();
+            Tokenizer tokenizer = new TokenizerME(modelToken);
+            POSTaggerME tagger = new POSTaggerME(modelPOStagger);
+
+            //from the user input, split the paragraph into tokens, then part of speech it
+            try {
+                String user_input_text = request.queryParams("user_input_text") != null ? request.queryParams("user_input_text") : "anonymous";
+                System.out.println(user_input_text);
+
+                Verb verb = new Verb();
+                HashMap verb_problem = verb.createVerbProblem(user_input_text, tokenizer, tagger); 
+
+                Template resultTemplate = configuration.getTemplate("templates/verb/part_of_speech_result.ftl");
+ 
+                Map<String, Object> map = new HashMap<>();
+                map.put("user_input_text", user_input_text);
+                //map.put("tokens", tokens);
+                //map.put("tags", tags);
+                //map.put("pos_list", pos_list);
+                map.put("prompt", verb_problem.get("prompt"));
+                map.put("answer_list", verb_problem.get("answer_list").toString());
+                map.put("not_answer_list", verb_problem.get("not_answer_list"));
+                
+                System.out.println(verb_problem);
+                resultTemplate.process(map, writer);
+            } catch (Exception e) {
+                System.out.println(e);
+                halt(500);
+            }
+            return writer;
+
         });
 
         get("/opennlp/part-of-speech", (request, response) -> {
